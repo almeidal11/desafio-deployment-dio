@@ -1,0 +1,19 @@
+FROM php: 7.4-apache
+
+WORKDIR /var/www/html
+
+COPY index.php /var/www/html
+
+COPY Conexao.php /var/www/html
+
+RUN apt-get update && apt-get install -y \
+		libfreetrype6-dev \
+		libjpeg62-turbo-dev \
+		libpng-dev \
+		&& docker-php-ext-configure gd --with-freestyle --with-jpeg \
+		&& docker-php-ext-install -j$(nproc) gd \
+		&& docker-php-ext-install pdo_mysql \ 
+		&& docker-php-ext-install mysqli
+		&& docker-php-ext-install pdo_postgresql
+		
+EXPOSE 80
